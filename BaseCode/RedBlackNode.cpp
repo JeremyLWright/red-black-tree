@@ -1,15 +1,19 @@
 #include "RedBlackNode.h"
 
 
-RedBlackNode::Ptr RedBlackNode::construct(uint32_t key, RedBlackNode::Ptr nil)
+RedBlackNode::Ptr RedBlackNode::construct(uint32_t key)
 {
-    left = nil;
-    right = nil;
-    RedBlackNode::Ptr c(new RedBlackNode());
+    RedBlackNode::Ptr c(new RedBlackNode(key));
+    c->self = c;
     return c;
 }
 
-RedBlackNode::RedBlackNode(){ }
+RedBlackNode::RedBlackNode(uint32_t key):
+    key(key),
+    color(RED)
+{
+}
+
 RedBlackNode::~RedBlackNode(){ }
 
 RedBlackNode::Ptr RedBlackNode::Left() const
@@ -22,26 +26,47 @@ RedBlackNode::Ptr RedBlackNode::Right() const
     return this->right;
 }
 
-RedBlackNode::Ptr RedBlackNode::Uncle() const
+RedBlackNode::Ptr RedBlackNode::Parent() const
 {
-    if(isLeftChild())
-    {
-        return this->Parent()->Right();
-    }
-    else
-    {
-        return this->Parent()->Left();
-    }
+    return this->parent;
 }
 
 bool RedBlackNode::isLeftChild() const
 {
-    if((this->Parent()->Left()) == this)
+    RedBlackNode::Ptr locked_self = self.lock();
+    if((this->Parent()->Left()) == locked_self)
         return true;
     return false;
 }
 
-bool RedBlackNode::operator==(RedBlackNode::Ptr const & other) const
+bool RedBlackNode::isRed() const
 {
-    return (other->Key() == key);
+    return (color == RED);
 }
+
+uint32_t RedBlackNode::Key() const
+{
+    return key;
+}
+
+void RedBlackNode::Left(RedBlackNode::Ptr new_node)
+{
+    left = new_node;
+    
+}
+
+void RedBlackNode::Right(RedBlackNode::Ptr new_node)
+{
+    right = new_node;
+}
+
+void RedBlackNode::Parent(RedBlackNode::Ptr parent_node)
+{
+    parent = parent_node;
+}
+
+void RedBlackNode::Color(color_t new_color)
+{
+    color = new_color;
+}
+

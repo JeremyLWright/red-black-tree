@@ -13,27 +13,31 @@
 #define REDBLACKNODE
 
 using std::tr1::shared_ptr;
+using std::tr1::weak_ptr;
 using std::string;
 
 class RedBlackNode {
 public:
     typedef enum { RED, BLACK } color_t;
     typedef shared_ptr<RedBlackNode> Ptr;
-    virtual RedBlackNode::Ptr construct(uint32_t key, RedBlackNode::Ptr nil);
+    typedef weak_ptr<RedBlackNode> WeakPtr;
+    static RedBlackNode::Ptr construct(uint32_t key);
     virtual ~RedBlackNode ();
-    bool isRed() const;
-    uint32_t Key() const;
-    color_t Color() const;
-    string toString() const;
-    bool operator==(RedBlackNode::Ptr const & other) const;
-    RedBlackNode::Ptr Left() const;
-    RedBlackNode::Ptr Right() const;
-    RedBlackNode::Ptr Uncle() const;
-    RedBlackNode::Ptr Parent() const;
-    bool isLeftChild() const;
+    virtual bool isRed() const;
+    virtual void Color(color_t);
+    virtual uint32_t Key() const;
+    virtual RedBlackNode::Ptr Left() const;
+    virtual void Left(RedBlackNode::Ptr);
+    virtual RedBlackNode::Ptr Right() const;
+    virtual void Right(RedBlackNode::Ptr);
+    virtual RedBlackNode::Ptr Parent() const;
+    virtual void Parent(RedBlackNode::Ptr);
+    virtual bool isLeftChild() const;
 private:
-    RedBlackNode();
+    RedBlackNode::WeakPtr self;
+    RedBlackNode(uint32_t key);
     uint32_t key;
+    RedBlackNode::Ptr parent;
     RedBlackNode::Ptr left;
     RedBlackNode::Ptr right;
     color_t color;

@@ -14,18 +14,23 @@
 #define REDBLACKTREE
 
 using std::tr1::shared_ptr;
-using RedBlackNode::color_t;
+using std::tr1::weak_ptr;
 class RedBlackTree {
 public:
     typedef shared_ptr<RedBlackTree> Ptr;
-    virtual RedBlackTree::Ptr construct();
+    typedef weak_ptr<RedBlackTree> WeakPtr;
+    static RedBlackTree::Ptr construct();
     virtual ~RedBlackTree ();
     virtual void Insert(uint32_t key);
-    virtual void Insert(uint32_t key, color_t color);
+    virtual void Insert(uint32_t key, RedBlackNode::color_t color);
     virtual void Delete(uint32_t key);    
 private:
+    virtual void Insert_Fixup(RedBlackNode::Ptr z);
+    virtual void Left_Rotate(RedBlackNode::Ptr);
+    virtual void Right_Rotate(RedBlackNode::Ptr);
     RedBlackNode::Ptr nil;
     RedBlackNode::Ptr root;
+    RedBlackTree::WeakPtr self;
     RedBlackTree ();
 };
 
