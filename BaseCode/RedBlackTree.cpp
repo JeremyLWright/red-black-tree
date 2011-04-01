@@ -17,6 +17,9 @@ RedBlackTree::Ptr RedBlackTree::construct()
 
 RedBlackTree::RedBlackTree()
 {
+    nil = RedBlackNode::construct(0);
+    nil->Color(RedBlackNode::BLACK);
+    root = nil;
 }
 
 RedBlackTree::~RedBlackTree()
@@ -42,7 +45,7 @@ void RedBlackTree::Insert(uint32_t key, RedBlackNode::color_t color)
             x = x->Right();
     }
 
-    z->Parent() = y;
+    z->Parent(y);
     if(y == nil)
         root = z;
     else if(z->Key() < y->Key())
@@ -111,36 +114,36 @@ void RedBlackTree::Insert_Fixup(RedBlackNode::Ptr z)
 void RedBlackTree::Left_Rotate(RedBlackNode::Ptr x)
 {
     RedBlackNode::Ptr y = x->Right();
-    x->Right() = y->Left();
+    x->Right(y->Left());
     if(y->Left() != nil)
-        y->Left()->Parent() = x;
-    y->Parent() = x->Parent();
+        y->Left()->Parent(x);
+    y->Parent(x->Parent());
     if(x->Parent() == nil)
         root = y;
     else if(x == x->Parent()->Left())
-        x->Parent()->Left() = y;
+        x->Parent()->Left(y);
     else
-        x->Parent()->Right() = y;
+        x->Parent()->Right(y);
 
-    y->Left() = x;
-    x->Parent() = y;
+    y->Left(x);
+    x->Parent(y);
 }
 
 void RedBlackTree::Right_Rotate(RedBlackNode::Ptr x)
 {
     RedBlackNode::Ptr y = x->Left();
-    x->Left() = y->Right();
+    x->Left(y->Right());
     if(y->Right() != nil)
-        y->Right()->Parent() = x;
-    y->Parent() = x->Parent();
+        y->Right()->Parent(x);
+    y->Parent(x->Parent());
     if(x->Parent() == nil)
         root = y;
     else if(x == x->Parent()->Right())
-        x->Parent()->Right() = y;
+        x->Parent()->Right(y);
     else
-        x->Parent()->Left() = y;
+        x->Parent()->Left(y);
 
-    y->Right() = x;
-    x->Parent() = y;
+    y->Right(x);
+    x->Parent(y);
 
 }

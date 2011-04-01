@@ -13,10 +13,13 @@
 #ifndef REDBLACKTREE
 #define REDBLACKTREE
 
+class RedBlackTreeTest;
+
 using std::tr1::shared_ptr;
 using std::tr1::weak_ptr;
 class RedBlackTree {
 public:
+    friend class RedBlackTreeTest;
     typedef shared_ptr<RedBlackTree> Ptr;
     typedef weak_ptr<RedBlackTree> WeakPtr;
     static RedBlackTree::Ptr construct();

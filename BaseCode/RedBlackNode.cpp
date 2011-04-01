@@ -16,27 +16,19 @@ RedBlackNode::RedBlackNode(uint32_t key):
 
 RedBlackNode::~RedBlackNode(){ }
 
-RedBlackNode::Ptr RedBlackNode::Left() const
+RedBlackNode::Ptr const RedBlackNode::Left() const
 {
     return this->left;
 }
 
-RedBlackNode::Ptr RedBlackNode::Right() const
+RedBlackNode::Ptr const RedBlackNode::Right() const
 {
     return this->right;
 }
 
-RedBlackNode::Ptr RedBlackNode::Parent() const
+RedBlackNode::Ptr const RedBlackNode::Parent() const
 {
     return this->parent;
-}
-
-bool RedBlackNode::isLeftChild() const
-{
-    RedBlackNode::Ptr locked_self = self.lock();
-    if((this->Parent()->Left()) == locked_self)
-        return true;
-    return false;
 }
 
 bool RedBlackNode::isRed() const

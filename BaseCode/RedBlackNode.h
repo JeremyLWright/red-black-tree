@@ -26,13 +26,12 @@ public:
     virtual bool isRed() const;
     virtual void Color(color_t);
     virtual uint32_t Key() const;
-    virtual RedBlackNode::Ptr Left() const;
+    virtual RedBlackNode::Ptr const Left() const;
     virtual void Left(RedBlackNode::Ptr);
-    virtual RedBlackNode::Ptr Right() const;
+    virtual RedBlackNode::Ptr const Right() const;
     virtual void Right(RedBlackNode::Ptr);
-    virtual RedBlackNode::Ptr Parent() const;
+    virtual RedBlackNode::Ptr const Parent() const;
     virtual void Parent(RedBlackNode::Ptr);
-    virtual bool isLeftChild() const;
 private:
     RedBlackNode::WeakPtr self;
     RedBlackNode(uint32_t key);
