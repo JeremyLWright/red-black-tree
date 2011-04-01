@@ -147,3 +147,8 @@ void RedBlackTree::Right_Rotate(RedBlackNode::Ptr x)
     x->Parent(y);
 
 }
+
+PreOrderIterator RedBlackTree::getPreOrderItr() const
+{
+   return PreOrderIterator(root, nil); 
+}

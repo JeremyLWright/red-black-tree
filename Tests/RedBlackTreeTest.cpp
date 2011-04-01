@@ -10,24 +10,58 @@ class RedBlackTreeTest: public ::testing::Test {
             RB_Ex1->Insert(2);
             RB_Ex1->Insert(4);
             RB_Ex1->Delete(3);
+/*            
+            RB_Ex2 = RedBlackTree::construct();
+            RB_Ex2->Insert(5, RedBlackNode::BLACK);
+            RB_Ex2->Insert(3, RedBlackNode::BLACK);
+            RB_Ex2->Insert(17, RedBlackNode::RED);
+            RB_Ex2->Insert(15, RedBlackNode::BLACK);
+            RB_Ex2->Insert(13, RedBlackNode::RED);
+            RB_Ex2->Insert(16, RedBlackNode::RED);
+            RB_Ex2->Insert(20, RedBlackNode::BLACK);
+
+            RB_Ex2->Insert(12);
+
+            RB_Ex3 = RedBlackTree::construct();
+            RB_Ex3->Insert(9, RedBlackNode::BLACK);
+            RB_Ex3->Insert(5, RedBlackNode::BLACK);
+            RB_Ex3->Insert(2, RedBlackNode::RED);
+            RB_Ex3->Insert(1, RedBlackNode::BLACK);
+            RB_Ex3->Insert(3, RedBlackNode::BLACK);
+            RB_Ex3->Insert(4, RedBlackNode::RED);
+            RB_Ex3->Insert(8, RedBlackNode::BLACK);
+            RB_Ex3->Insert(15, RedBlackNode::BLACK);
+            RB_Ex3->Insert(13, RedBlackNode::BLACK);
+            RB_Ex3->Insert(16, RedBlackNode::BLACK);
+
+            RB_Ex3->Delete(8);
+            */
         }
 
+        RedBlackTree::Ptr RB_Ex3;
+        RedBlackTree::Ptr RB_Ex2;
         RedBlackTree::Ptr RB_Ex1;
-        RedBlackNode::Ptr RB_Ex1_root() {
-            return RB_Ex1->root;
-        }
 
 };
 
 
 TEST_F(RedBlackTreeTest, Example_1_Output)
 {
-    RedBlackNode::Ptr root = RB_Ex1_root();
-    EXPECT_EQ(root->Key(), 2);
-    EXPECT_EQ(root->Right()->Key(), 4);
-    EXPECT_FALSE(root->isRed());
-    EXPECT_TRUE(root->Right()->isRed());
+    PreOrderIterator it = RB_Ex1->getPreOrderItr();
+    ++it;
+    EXPECT_EQ((*it)->Key(), 2);
+    EXPECT_FALSE((*it)->isRed());
+    ++it;
+    EXPECT_EQ((*it)->Key(), 4);
+    EXPECT_TRUE((*it)->isRed());
+}
+/*
+TEST_F(RedBlackTreeTest, Example_2_Output)
+{
+    PreOrderIterator it = RB_Ex2->getPreOrderItr();
+    ++it;
+    EXPECT_EQ((*it)->Key(), 15);
+
 }
 
-
-
+*/

@@ -9,17 +9,15 @@
 #include <stdint.h>
 #include <tr1/memory>
 #include "RedBlackNode.h"
+#include "PreOrderIterator.h"
 
 #ifndef REDBLACKTREE
 #define REDBLACKTREE
-
-class RedBlackTreeTest;
 
 using std::tr1::shared_ptr;
 using std::tr1::weak_ptr;
 class RedBlackTree {
 public:
-    friend class RedBlackTreeTest;
     typedef shared_ptr<RedBlackTree> Ptr;
     typedef weak_ptr<RedBlackTree> WeakPtr;
     static RedBlackTree::Ptr construct();
@@ -27,6 +25,7 @@ public:
     virtual void Insert(uint32_t key);
     virtual void Insert(uint32_t key, RedBlackNode::color_t color);
     virtual void Delete(uint32_t key);    
+    virtual PreOrderIterator getPreOrderItr() const;
 private:
     virtual void Insert_Fixup(RedBlackNode::Ptr z);
     virtual void Left_Rotate(RedBlackNode::Ptr);
