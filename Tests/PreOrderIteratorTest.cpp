@@ -38,7 +38,7 @@ class PreOrderIteratorTest: public ::testing::Test {
 TEST_F(PreOrderIteratorTest, Example_1_Output)
 {
     PreOrderIterator it = RB_Ex1->getPreOrderItr();
-    while((it.complete()))
+    while(!(it.complete()))
     {
         cout << (*it)->Key() << ", " ;
     }
