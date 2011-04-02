@@ -11,8 +11,8 @@ class PreOrderIteratorTest: public ::testing::Test {
             RB_Ex1 = RedBlackTree::construct();
             RB_Ex1->Insert(1);
             RB_Ex1->Insert(2);
-//            RB_Ex1->Insert(3);
-       /*     RB_Ex1->Insert(4);
+            RB_Ex1->Insert(3);
+            RB_Ex1->Insert(4);
             RB_Ex1->Insert(5);
             RB_Ex1->Insert(6);
             RB_Ex1->Insert(7);
@@ -26,7 +26,7 @@ class PreOrderIteratorTest: public ::testing::Test {
             RB_Ex1->Insert(15);
             RB_Ex1->Insert(16);
             RB_Ex1->Insert(17);
-            RB_Ex1->Insert(18);*/
+            RB_Ex1->Insert(18);
 
         }
 
@@ -38,8 +38,12 @@ class PreOrderIteratorTest: public ::testing::Test {
 TEST_F(PreOrderIteratorTest, Example_1_Output)
 {
     PreOrderIterator it = RB_Ex1->getPreOrderItr();
+    int correct_order[] = {8,4,2,1,3,6,5,7,12,10,9,11,14,13,16,15,17,18};
+    int* expected_value = correct_order;
     while(!(it.complete()))
     {
-        cout << (*it)->Key() << ", " ;
+        ++it;
+        EXPECT_EQ(*expected_value, (*it)->Key());
+        expected_value++;
     }
 }

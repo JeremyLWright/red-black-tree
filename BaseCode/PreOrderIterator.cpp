@@ -10,11 +10,11 @@
 
 PreOrderIterator::PreOrderIterator(RedBlackNode::Ptr _root,
         RedBlackNode::Ptr _nil):
-    p(root),
+    p(_root),
     root(_root),
     nil(_nil)
 {
-    nodeStack.push(root);
+    nodeStack.push(_root);
 }
     
 

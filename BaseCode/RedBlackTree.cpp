@@ -18,6 +18,9 @@ RedBlackTree::Ptr RedBlackTree::construct()
 RedBlackTree::RedBlackTree()
 {
     nil = RedBlackNode::construct(0);
+	nil->Left(nil);
+	nil->Right(nil);
+	nil->Parent(nil);
     nil->Color(RedBlackNode::BLACK);
     root = nil;
 }
@@ -66,7 +69,7 @@ void RedBlackTree::Delete(uint32_t key)
 
 void RedBlackTree::Insert_Fixup(RedBlackNode::Ptr z)
 {
-    while(z->Parent()->isRed())
+    while(z->Parent()->isRed() && z->Parent() != nil)
     {
         if(z->Parent() == z->Parent()->Parent()->Left())
         {
@@ -78,14 +81,17 @@ void RedBlackTree::Insert_Fixup(RedBlackNode::Ptr z)
                 z->Parent()->Parent()->Color(RedBlackNode::RED);
                 z = z->Parent()->Parent();
             }
-            else if(z == z->Parent()->Right())
-            {
-                z = z->Parent();            //Case 2
-                Left_Rotate(z);             //Case 2
-                z->Parent()->Color(RedBlackNode::BLACK);  //Case 3
-                z->Parent()->Parent()->Color(RedBlackNode::RED); //Case 3
-                Right_Rotate(z->Parent()->Parent()); //Case 3
-            }
+            else 
+			{
+				if(z == z->Parent()->Right())
+				{
+					z = z->Parent();            //Case 2
+					Left_Rotate(z);             //Case 2
+				}
+				z->Parent()->Color(RedBlackNode::BLACK);  //Case 3
+				z->Parent()->Parent()->Color(RedBlackNode::RED); //Case 3
+				Right_Rotate(z->Parent()->Parent()); //Case 3
+			}
         }
         else
         {
@@ -97,16 +103,18 @@ void RedBlackTree::Insert_Fixup(RedBlackNode::Ptr z)
                 z->Parent()->Parent()->Color(RedBlackNode::RED);
                 z = z->Parent()->Parent();
             }
-            else if(z == z->Parent()->Left())
-            {
-                z = z->Parent();            //Case 2
-                Right_Rotate(z);             //Case 2
-                z->Parent()->Color(RedBlackNode::BLACK);  //Case 3
-                z->Parent()->Parent()->Color(RedBlackNode::RED); //Case 3
-                Left_Rotate(z->Parent()->Parent()); //Case 3
-            }
-
-        }
+            else 
+			{
+				if(z == z->Parent()->Left())
+				{
+					z = z->Parent();            //Case 2
+					Right_Rotate(z);             //Case 2
+				}
+				z->Parent()->Color(RedBlackNode::BLACK);  //Case 3
+				z->Parent()->Parent()->Color(RedBlackNode::RED); //Case 3
+				Left_Rotate(z->Parent()->Parent()); //Case 3
+			}
+		}
     }
     root->Color(RedBlackNode::BLACK);
 }
