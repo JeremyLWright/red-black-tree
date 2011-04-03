@@ -18,7 +18,7 @@ using std::string;
 
 class RedBlackNode {
 public:
-    typedef enum { RED, BLACK } color_t;
+    typedef enum { RED = 0, BLACK } color_t;
     typedef shared_ptr<RedBlackNode> Ptr;
     typedef weak_ptr<RedBlackNode> WeakPtr;
     static RedBlackNode::Ptr construct(uint32_t key);
