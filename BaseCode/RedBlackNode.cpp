@@ -62,3 +62,8 @@ void RedBlackNode::Color(color_t new_color)
     color = new_color;
 }
 
+RedBlackNode::color_t RedBlackNode::Color() const
+{
+    return color;
+}
+

@@ -24,10 +24,14 @@ public:
     virtual ~RedBlackTree ();
     virtual void Insert(uint32_t key);
     virtual void Insert(uint32_t key, RedBlackNode::color_t color);
-    virtual void Delete(uint32_t key);    
+    virtual void Delete(uint32_t key);
     virtual PreOrderIterator getPreOrderItr() const;
 private:
+    virtual RedBlackNode::Ptr Search(uint32_t key) const;
+    virtual void Transplant(RedBlackNode::Ptr u, RedBlackNode::Ptr v);
+    virtual RedBlackNode::Ptr Minimum(RedBlackNode::Ptr x) const;
     virtual void Insert_Fixup(RedBlackNode::Ptr z);
+    virtual void Delete_Fixup(RedBlackNode::Ptr x);
     virtual void Left_Rotate(RedBlackNode::Ptr);
     virtual void Right_Rotate(RedBlackNode::Ptr);
     RedBlackNode::Ptr nil;

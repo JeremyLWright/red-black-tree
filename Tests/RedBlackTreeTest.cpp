@@ -10,7 +10,7 @@ class RedBlackTreeTest: public ::testing::Test {
             RB_Ex1->Insert(2);
             RB_Ex1->Insert(4);
             RB_Ex1->Delete(3);
-/*            
+            
             RB_Ex2 = RedBlackTree::construct();
             RB_Ex2->Insert(5, RedBlackNode::BLACK);
             RB_Ex2->Insert(3, RedBlackNode::BLACK);
@@ -35,7 +35,7 @@ class RedBlackTreeTest: public ::testing::Test {
             RB_Ex3->Insert(16, RedBlackNode::BLACK);
 
             RB_Ex3->Delete(8);
-            */
+            
         }
 
         RedBlackTree::Ptr RB_Ex3;
@@ -55,13 +55,34 @@ TEST_F(RedBlackTreeTest, Example_1_Output)
     EXPECT_EQ((*it)->Key(), 4);
     EXPECT_TRUE((*it)->isRed());
 }
-/*
+
 TEST_F(RedBlackTreeTest, Example_2_Output)
 {
     PreOrderIterator it = RB_Ex2->getPreOrderItr();
-    ++it;
-    EXPECT_EQ((*it)->Key(), 15);
+    int expected_keys[] = {15, 5, 3, 13, 12, 17, 16, 20} ;
+    int* keys = expected_keys;
+    while(it.complete() == false)
+    {
+        ++it;
+        EXPECT_EQ(*keys, (*it)->Key());
+        ++keys;
+    }
 
 }
 
-*/
+TEST_F(RedBlackTreeTest, Example_3_Output)
+{
+    PreOrderIterator it = RB_Ex3->getPreOrderItr();
+    int expected_keys[] = {9,2,1,4,3,5,15,13,16};
+    int* keys = expected_keys;
+    while(it.complete() == false)
+    {
+        ++it;
+        EXPECT_EQ(*keys, (*it)->Key());
+        ++keys;
+    }
+
+}
+
+
+

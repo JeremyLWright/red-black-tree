@@ -25,6 +25,7 @@ public:
     virtual ~RedBlackNode ();
     virtual bool isRed() const;
     virtual void Color(color_t);
+    virtual RedBlackNode::color_t Color() const;
     virtual uint32_t Key() const;
     virtual RedBlackNode::Ptr const Left() const;
     virtual void Left(RedBlackNode::Ptr);

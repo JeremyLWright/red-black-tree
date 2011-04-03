@@ -31,10 +31,6 @@ RedBlackTree::~RedBlackTree()
 
 void RedBlackTree::Insert(uint32_t key)
 {
-    Insert(key, RedBlackNode::RED);
-} 
-void RedBlackTree::Insert(uint32_t key, RedBlackNode::color_t color)
-{
     RedBlackNode::Ptr z = RedBlackNode::construct(key);
     RedBlackNode::Ptr x = root;
     RedBlackNode::Ptr y = nil;
@@ -57,15 +53,180 @@ void RedBlackTree::Insert(uint32_t key, RedBlackNode::color_t color)
         y->Right(z);
     z->Left(nil);
     z->Right(nil);
-    z->Color(color);
+    z->Color(RedBlackNode::RED);
     Insert_Fixup(z);
+}
 
+/**
+ * Inserts as a binary tree, without respecting color
+ */
+void RedBlackTree::Insert(uint32_t key, RedBlackNode::color_t color)
+{
+    RedBlackNode::Ptr z = RedBlackNode::construct(key);
+    z->Color(color);
+
+    RedBlackNode::Ptr x = root;       
+    RedBlackNode::Ptr y = nil;
+    while(x != nil)
+    {
+        y = x;
+        if(z->Key() < x->Key())
+            x = x->Left();
+        else
+            x = x->Right();
+    }
+    z->Parent(y);
+    if(y == nil)
+        root = z; //Tree was empty
+    else if(z->Key() < y->Key())
+        y->Left(z);
+    else
+        y->Right(z);
+    z->Left(nil);
+    z->Right(nil);
 
 }
 
 void RedBlackTree::Delete(uint32_t key)
 {
+    
+    RedBlackNode::Ptr z = Search(key);
+    RedBlackNode::Ptr x;
+    if(z == nil)
+        return;
+    
+    RedBlackNode::Ptr y = z;
+    RedBlackNode::color_t original_color = y->Color();
+    if(z->Left() == nil)
+    {
+        x = z->Right();
+        Transplant(z,z->Right());
+    }
+    else if(z->Right() == nil)
+    {
+        x = z->Left();
+        Transplant(z,z->Left());
+    }
+    else
+    {
+        y = Minimum(z->Right());
+        original_color = y->Color();
+        x = y->Right();
+        if(y->Parent() == z)
+        {
+            x->Parent(y);
+        }
+        else
+        {
+            Transplant(y,y->Right());
+            y->Right(z->Right());
+            y->Right()->Parent(y);
+        }
+        Transplant(z,y);
+        y->Left(z->Left());
+        y->Left()->Parent(y);
+        y->Color(z->Color());
+    }
+    if(original_color == RedBlackNode::BLACK)
+    {
+        Delete_Fixup(x);
+    }
 }
+
+
+void RedBlackTree::Delete_Fixup(RedBlackNode::Ptr x)
+{
+    while(x != root && x->Color() == RedBlackNode::BLACK)
+    {
+        if(x == x->Parent()->Left())
+        {
+            RedBlackNode::Ptr w = x->Parent()->Right();
+            if(w->isRed())
+            {
+                w->Color(RedBlackNode::BLACK);                  //Case 1
+                x->Parent()->Color(RedBlackNode::RED);            //Case 1
+                Left_Rotate(x->Parent());                       //Case 1
+                w = x->Parent()->Right();                       //Case 1
+            }
+
+            if(w->Left()->Color() == RedBlackNode::BLACK &&
+               w->Right()->Color() == RedBlackNode::BLACK)
+            {
+                w->Color(RedBlackNode::RED);                    //Case 2
+                x = x->Parent();                                //Case 2
+            }
+            else
+            {
+                if(w->Right()->Color() == RedBlackNode::BLACK)
+                {
+                    w->Left()->Color(RedBlackNode::BLACK);      //Case 3
+                    w->Color(RedBlackNode::RED);                //Case 3
+                    Right_Rotate(w);                            //Case 3
+                    w = x->Parent()->Right();                   //Case 3
+                }
+
+                w->Color(x->Parent()->Color());                 //Case 4
+                x->Parent()->Color(RedBlackNode::BLACK);        //Case 4
+                w->Right()->Color(RedBlackNode::BLACK);         //Case 4
+                Left_Rotate(x->Parent());
+                x = root;
+
+            }
+        }
+        else
+        {
+            RedBlackNode::Ptr w = x->Parent()->Left();
+            if(w->isRed())
+            {
+                w->Color(RedBlackNode::BLACK);                  //Case 1
+                x->Parent()->Color(RedBlackNode::RED);            //Case 1
+                Right_Rotate(x->Parent());                       //Case 1
+                w = x->Parent()->Left();                       //Case 1
+            }
+
+            if(w->Right()->Color() == RedBlackNode::BLACK &&
+               w->Left()->Color() == RedBlackNode::BLACK)
+            {
+                w->Color(RedBlackNode::RED);                    //Case 2
+                x = x->Parent();                                //Case 2
+            }
+            else
+            {
+                if(w->Left()->Color() == RedBlackNode::BLACK)
+                {
+                    w->Right()->Color(RedBlackNode::BLACK);      //Case 3
+                    w->Color(RedBlackNode::RED);                //Case 3
+                    Left_Rotate(w);                            //Case 3
+                    w = x->Parent()->Left();                   //Case 3
+                }
+
+                w->Color(x->Parent()->Color());                 //Case 4
+                x->Parent()->Color(RedBlackNode::BLACK);        //Case 4
+                w->Left()->Color(RedBlackNode::BLACK);         //Case 4
+                Right_Rotate(x->Parent());
+                x = root;
+
+            }
+        }
+    }
+    x->Color(RedBlackNode::BLACK);
+}
+
+RedBlackNode::Ptr RedBlackTree::Search(uint32_t key) const
+{
+    RedBlackNode::Ptr search = root;
+    while(search != nil)
+    {
+        if(key == search->Key())
+            return search;
+        else if (key < search->Key())
+            search = search->Left();
+        else
+            search = search->Right();
+    }
+    return nil;
+}
+
 
 void RedBlackTree::Insert_Fixup(RedBlackNode::Ptr z)
 {
@@ -160,3 +321,24 @@ PreOrderIterator RedBlackTree::getPreOrderItr() const
 {
    return PreOrderIterator(root, nil); 
 }
+
+void RedBlackTree::Transplant(RedBlackNode::Ptr u, RedBlackNode::Ptr v)
+{
+    if(u->Parent() == nil)
+        root = v;
+    else if(u == u->Parent()->Left())
+        u->Parent()->Left(v);
+    else
+        u->Parent()->Right(v);
+    v->Parent(u->Parent());
+}
+
+RedBlackNode::Ptr RedBlackTree::Minimum(RedBlackNode::Ptr x) const
+{
+    while(x->Left() != nil)
+    {
+        x = x->Left();
+    }
+    return x;
+}
+    
