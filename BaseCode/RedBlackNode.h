@@ -37,7 +37,7 @@ private:
     RedBlackNode::WeakPtr self;
     RedBlackNode(uint32_t key);
     uint32_t key;
-    RedBlackNode::Ptr parent;
+    RedBlackNode::WeakPtr parent;
     RedBlackNode::Ptr left;
     RedBlackNode::Ptr right;
     color_t color;

@@ -28,7 +28,8 @@ RedBlackNode::Ptr const RedBlackNode::Right() const
 
 RedBlackNode::Ptr const RedBlackNode::Parent() const
 {
-    return this->parent;
+    if(RedBlackNode::Ptr shared_parent = this->parent.lock())
+        return shared_parent;
 }
 
 bool RedBlackNode::isRed() const
@@ -54,7 +55,7 @@ void RedBlackNode::Right(RedBlackNode::Ptr new_node)
 
 void RedBlackNode::Parent(RedBlackNode::Ptr parent_node)
 {
-    parent = parent_node;
+    parent = RedBlackNode::WeakPtr(parent_node);
 }
 
 void RedBlackNode::Color(color_t new_color)
